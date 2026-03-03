@@ -52,18 +52,105 @@
  *   createThaliDescription({name:"Rajasthani Thali", items:["dal"], price:250, isVeg:true})
  *   // => "RAJASTHANI THALI (Veg) - Items: dal - Rs.250.00"
  */
+
 export function createThaliDescription(thali) {
-  // Your code here
+  if (
+    !thali ||
+    typeof thali.name !== "string" ||
+    !Array.isArray(thali.items) ||
+    typeof thali.price !== "number" ||
+    typeof thali.isVeg !== "boolean"
+  ) {
+    return "";
+  }
+
+  const nameUpper = thali.name.toUpperCase();
+  const type = thali.isVeg ? "Veg" : "Non-Veg";
+  const itemsList = thali.items.join(", ");
+  const formattedPrice = thali.price.toFixed(2);
+
+  return `${nameUpper} (${type}) - Items: ${itemsList} - Rs.${formattedPrice}`;
 }
 
 export function getThaliStats(thalis) {
-  // Your code here
+  if (!Array.isArray(thalis) || thalis.length === 0) return null;
+
+  const totalThalis = thalis.length;
+  const vegCount = thalis.filter((t) => t.isVeg).length;
+  const nonVegCount = totalThalis - vegCount;
+
+  const prices = thalis.map((t) => t.price);
+  const totalPrice = thalis.reduce((sum, t) => sum + t.price, 0);
+
+  return {
+    totalThalis,
+    vegCount,
+    nonVegCount,
+    avgPrice: (totalPrice / totalThalis).toFixed(2),
+    cheapest: Math.min(...prices),
+    costliest: Math.max(...prices),
+    names: thalis.map((t) => t.name),
+  };
 }
 
 export function searchThaliMenu(thalis, query) {
-  // Your code here
+  if (!Array.isArray(thalis) || typeof query !== "string") return [];
+
+  const lowerQuery = query.toLowerCase();
+
+  return thalis.filter((thali) => {
+    const nameMatch = thali.name.toLowerCase().includes(lowerQuery);
+
+    const itemMatch = thali.items.some((item) =>
+      item.toLowerCase().includes(lowerQuery),
+    );
+    return nameMatch || itemMatch;
+  });
 }
 
 export function generateThaliReceipt(customerName, thalis) {
-  // Your code here
+  if (
+    typeof customerName !== "string" ||
+    !Array.isArray(thalis) ||
+    thalis.length === 0
+  ) {
+    return "";
+  }
+
+  const nameUpper = customerName.trim().toUpperCase();
+  const total = thalis.reduce((sum, t) => sum + t.price, 0);
+
+  const lineItems = thalis.map((t) => `- ${t.name} x Rs.${t.price}`).join("\n");
+
+  return `THALI RECEIPT\n---\nCustomer: ${nameUpper}\n${lineItems}\n---\nTotal: Rs.${total}\nItems: ${thalis.length}`;
 }
+
+const myMenu = [
+  {
+    name: "Rajasthani Thali",
+    items: ["Dal Baati", "Churma"],
+    price: 250,
+    isVeg: true,
+  },
+  {
+    name: "Chicken Thali",
+    items: ["Chicken Curry", "Roti"],
+    price: 350,
+    isVeg: false,
+  },
+  {
+    name: "Gujarati Thali",
+    items: ["Dhokla", "Kadhi"],
+    price: 200,
+    isVeg: true,
+  },
+];
+
+console.log(createThaliDescription(myMenu[0]));
+
+console.table(getThaliStats(myMenu));
+
+const searchResult = searchThaliMenu(myMenu, "dal");
+console.log(`Search found ${searchResult.length} result(s).`);
+
+console.log(generateThaliReceipt("Guddu", [myMenu[0], myMenu[2]]));

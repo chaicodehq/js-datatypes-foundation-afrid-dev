@@ -40,29 +40,57 @@
  *      - .filter() se sirf "waitlisted" passengers return karo
  *      - Agar passengers array nahi hai, return []
  *      - Example: getWaitlistedPassengers([{name:"A",status:"confirmed"},{name:"B",status:"waitlisted"}])
- *                 => [{name:"B", status:"waitlisted"}]
+ *                 => [{name:"B", status:"waitlistead"}]
  *
  * @example
  *   findPassenger(passengers, "Rahul")   // => { name: "Rahul", ... }
  *   isAnyWaitlisted(passengers)          // => true/false
  *   areAllConfirmed(passengers)          // => true/false
  */
+
 export function findPassenger(passengers, name) {
-  // Your code here
+  if (!Array.isArray(passengers) || typeof name !== "string") return undefined;
+
+  return passengers.find((p) => p.name.toLowerCase() === name.toLowerCase());
 }
 
 export function getPassengerIndex(passengers, name) {
-  // Your code here
+  if (!Array.isArray(passengers) || typeof name !== "string") return -1;
+
+  return passengers.findIndex(
+    (p) => p.name.toLowerCase() === name.toLowerCase(),
+  );
 }
 
 export function isAnyWaitlisted(passengers) {
-  // Your code here
+  if (!Array.isArray(passengers) || passengers.length === 0) return false;
+
+  return passengers.some((p) => p.status === "waitlisted");
 }
 
 export function areAllConfirmed(passengers) {
-  // Your code here
+  if (!Array.isArray(passengers) || passengers.length === 0) return false;
+
+  return passengers.every((p) => p.status === "confirmed");
 }
 
 export function getWaitlistedPassengers(passengers) {
-  // Your code here
+  if (!Array.isArray(passengers)) return [];
+
+  return passengers.filter((p) => p.status === "waitlisted");
 }
+
+const trainChart = [
+  { name: "Rahul", coach: "S5", seat: 42, status: "confirmed" },
+  { name: "Priya", coach: "S3", seat: 15, status: "waitlisted" },
+  { name: "Amit", coach: "S1", seat: 10, status: "confirmed" },
+];
+
+const passenger = findPassenger(trainChart, "PRIYA");
+console.log("Found Passenger:", passenger?.coach, passenger?.seat);
+
+console.log("Any Waitlisted?:", isAnyWaitlisted(trainChart));
+console.log("All Confirmed?:", areAllConfirmed(trainChart));
+
+const waitingList = getWaitlistedPassengers(trainChart);
+console.log("Waiting List Count:", waitingList.length);

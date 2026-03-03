@@ -47,22 +47,55 @@
  *   addUrgentItem(["pyaaz"], "dhaniya")              // => ["dhaniya", "pyaaz"]
  *   removeLastItem(["tamatar", "pyaaz", "mirchi"])   // => "mirchi"
  */
+
 export function addToCart(cart, item) {
-  // Your code here
+  if (!Array.isArray(cart)) return -1;
+  if (typeof item !== "string" || item.trim() === "") return cart.length;
+
+  return cart.push(item);
 }
 
 export function addUrgentItem(cart, item) {
-  // Your code here
+  if (!Array.isArray(cart)) return [];
+  if (typeof item !== "string" || item.trim() === "") return cart;
+
+  cart.unshift(item);
+  return cart;
 }
 
 export function removeLastItem(cart) {
-  // Your code here
+  if (!Array.isArray(cart) || cart.length === 0) return undefined;
+
+  return cart.pop();
 }
 
 export function isInCart(cart, item) {
-  // Your code here
+  if (!Array.isArray(cart)) return false;
+
+  return cart.includes(item);
 }
 
 export function mergeCarts(cart1, cart2) {
-  // Your code here
+  const arr1 = Array.isArray(cart1) ? cart1 : [];
+  const arr2 = Array.isArray(cart2) ? cart2 : [];
+
+  return arr1.concat(arr2);
 }
+
+let ammaCart = ["tamatar", "pyaaz"];
+
+const newLength = addToCart(ammaCart, "mirchi");
+console.log(`Added mirchi. Total items: ${newLength}`);
+
+addUrgentItem(ammaCart, "dhaniya");
+console.log("Urgent List:", ammaCart);
+
+const hasPyaaz = isInCart(ammaCart, "pyaaz");
+console.log(`Is Pyaaz in cart? ${hasPyaaz ? "Haan" : "Nahi"}`);
+
+const removed = removeLastItem(ammaCart);
+console.log(`Removed ${removed}. Final Cart:`, ammaCart);
+
+const secondBag = ["nimbu", "adrak"];
+const finalThela = mergeCarts(ammaCart, secondBag);
+console.log("Merged Thela:", finalThela);

@@ -50,22 +50,54 @@
  *   calculateTotal([{price:40,qty:2},...])    // => 160
  *   formatBill([{name:"Atta",price:40,qty:2}]) // => "Atta x 2 = Rs.80"
  */
+
 export function getItemNames(items) {
-  // Your code here
+  if (!Array.isArray(items)) return [];
+
+  return items.map((item) => item.name);
 }
 
 export function getAffordableItems(items, maxPrice) {
-  // Your code here
+  if (!Array.isArray(items) || typeof maxPrice !== "number") return [];
+
+  return items.filter((item) => item.price <= maxPrice);
 }
 
 export function calculateTotal(items) {
-  // Your code here
+  if (!Array.isArray(items) || items.length === 0) return 0;
+
+  return items.reduce((acc, item) => acc + item.price * item.qty, 0);
 }
 
-export function sortByPrice(items, ascending) {
-  // Your code here
+export function sortByPrice(items, ascending = true) {
+  if (!Array.isArray(items)) return [];
+
+  return [...items].sort((a, b) => {
+    return ascending ? a.price - b.price : b.price - a.price;
+  });
 }
 
 export function formatBill(items) {
-  // Your code here
+  if (!Array.isArray(items) || items.length === 0) return "";
+
+  return items
+    .map((item) => `${item.name} x ${item.qty} = Rs.${item.price * item.qty}`)
+    .join("\n");
 }
+
+const inventory = [
+  { name: "Atta", price: 40, qty: 2 },
+  { name: "Daal", price: 120, qty: 1 },
+  { name: "Chawal", price: 60, qty: 3 },
+];
+
+console.log("Items list:", getItemNames(inventory));
+
+console.log("Budget Items:", getAffordableItems(inventory, 100));
+
+console.log(`Grand Total: ₹${calculateTotal(inventory)}`);
+
+const sorted = sortByPrice(inventory, false);
+console.log("Premium Items First:", sorted[0].name);
+
+console.log("--- FINAL BILL ---\n" + formatBill(inventory));

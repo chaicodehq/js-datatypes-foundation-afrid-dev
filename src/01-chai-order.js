@@ -45,22 +45,61 @@
  *   shoutChaiOrder("masala chai")          // => "MASALA CHAI"
  *   hasSpecialIngredient("Elaichi Chai", "elaichi")  // => true
  */
+
 export function getChaiOrderLength(order) {
-  // Your code here
+  if (typeof order !== "string") return -1;
+  return order.trim().length;
 }
 
 export function shoutChaiOrder(order) {
-  // Your code here
+  if (typeof order !== "string") return "";
+  const trimmedOrder = order.trim();
+  return trimmedOrder.length > 0 ? trimmedOrder.toUpperCase() : "";
 }
 
 export function whisperChaiOrder(order) {
-  // Your code here
+  if (typeof order !== "string") return "";
+  const trimmedOrder = order.trim();
+  return trimmedOrder.length > 0 ? trimmedOrder.toLowerCase() : "";
 }
 
 export function hasSpecialIngredient(order, ingredient) {
-  // Your code here
+  if (typeof order !== "string" || typeof ingredient !== "string") return false;
+  return order.toLowerCase().includes(ingredient.toLowerCase());
 }
 
 export function getFirstAndLastChar(order) {
-  // Your code here
+  if (typeof order !== "string") return null;
+  const trimmedOrder = order.trim();
+  if (trimmedOrder.length === 0) return null;
+
+  return {
+    first: trimmedOrder.charAt(0),
+    last: trimmedOrder.at(-1),
+  };
+}
+
+const order1 = "   Masala Tea   ";
+const lengthResult = getChaiOrderLength(order1);
+console.log(`Original: "${order1}" | Processed Length: ${lengthResult}`);
+
+const order2 = "cutting chai";
+const shoutResult = shoutChaiOrder(order2);
+console.log(`Input: "${order2}" | Shout Output: "${shoutResult}"`);
+
+const order3 = "ADRAK WALI CHAI";
+const whisperResult = whisperChaiOrder(order3);
+console.log(`Input: "${order3}" | Whisper Output: "${whisperResult}"`);
+
+const order4 = "Special Elaichi Mix";
+const searchFor = "elaichi";
+const hasIngredient = hasSpecialIngredient(order4, searchFor);
+console.log(`Does "${order4}" contain "${searchFor}"? : ${hasIngredient}`);
+
+const order5 = "Cutting";
+const charResult = getFirstAndLastChar(order5);
+if (charResult) {
+  console.log(
+    `Order: "${order5}" | First: ${charResult.first} | Last: ${charResult.last}`,
+  );
 }

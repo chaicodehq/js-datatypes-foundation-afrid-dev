@@ -57,22 +57,41 @@
  *   isValidParcelWeight(2.5)     // => true
  *   isTruthy("")                 // => false
  */
+
 export function getDataType(value) {
-  // Your code here
+  if (value === null) return "null";
+
+  if (Array.isArray(value)) return "array";
+
+  return typeof value;
 }
 
 export function isValidParcelWeight(weight) {
-  // Your code here
+  return typeof weight === "number" && Number.isFinite(weight) && weight > 0;
 }
 
 export function isWholeNumber(value) {
-  // Your code here
+  return Number.isInteger(value);
 }
 
 export function isNotANumber(value) {
-  // Your code here
+  return Number.isNaN(value);
 }
 
 export function isTruthy(value) {
-  // Your code here
+  return Boolean(value);
 }
+
+console.log(getDataType(null));
+console.log(getDataType([10, 20]));
+console.log(getDataType(400001));
+
+console.log("Valid Weight (2.5kg):", isValidParcelWeight(2.5));
+console.log("Valid Weight (String '5'):", isValidParcelWeight("5"));
+console.log("Valid Weight (Infinity):", isValidParcelWeight(Infinity));
+
+console.log("Is 42 an Integer?:", isWholeNumber(42));
+console.log("Is 42.5 an Integer?:", isWholeNumber(42.5));
+
+console.log("Is Empty Array Truthy?:", isTruthy([]));
+console.log("Is Empty String Truthy?:", isTruthy(""));

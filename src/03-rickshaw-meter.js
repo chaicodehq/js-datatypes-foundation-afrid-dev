@@ -50,22 +50,67 @@
  *   roundFare(152.567, 2)                  // => "152.57"
  *   findCheapestAndCostliest(150, 80, 200) // => { cheapest: 80, costliest: 200 }
  */
+
 export function parseFare(fareString) {
-  // Your code here
+  if (typeof fareString !== "string") return -1;
+  const fare = parseFloat(fareString);
+
+  return isNaN(fare) ? -1 : fare;
 }
 
 export function roundFare(amount, decimalPlaces) {
-  // Your code here
+  if (
+    typeof amount !== "number" ||
+    !Number.isInteger(decimalPlaces) ||
+    decimalPlaces < 0
+  ) {
+    return "";
+  }
+  return amount.toFixed(decimalPlaces);
 }
 
 export function calculateSurge(baseFare, surgeMultiplier) {
-  // Your code here
+  if (
+    typeof baseFare !== "number" ||
+    baseFare <= 0 ||
+    typeof surgeMultiplier !== "number" ||
+    surgeMultiplier <= 0
+  ) {
+    return 0;
+  }
+
+  return Math.ceil(baseFare * surgeMultiplier);
 }
 
 export function findCheapestAndCostliest(...fares) {
-  // Your code here
+  const validFares = fares.filter((f) => typeof f === "number" && !isNaN(f));
+
+  if (validFares.length === 0) return null;
+
+  return {
+    cheapest: Math.min(...validFares),
+    costliest: Math.max(...validFares),
+  };
 }
 
 export function getDistanceDifference(from, to) {
-  // Your code here
+  const start = parseInt(from);
+  const end = parseInt(to);
+
+  if (isNaN(start) || isNaN(end)) return -1;
+
+  return Math.abs(start - end);
 }
+
+const rawFare = "245.75";
+const actualFare = parseFare(rawFare);
+console.log(`Parsed Fare: ₹${actualFare}`);
+
+const surgePrice = calculateSurge(150, 1.55);
+console.log(`Surge Price (Always Round Up): ₹${surgePrice}`);
+
+const rates = findCheapestAndCostliest(120, 450, 80, 300);
+console.log(`Min: ₹${rates.cheapest}, Max: ₹${rates.costliest}`);
+
+const dist = getDistanceDifference("25km", "10km");
+console.log(`Total Distance: ${dist} km`);

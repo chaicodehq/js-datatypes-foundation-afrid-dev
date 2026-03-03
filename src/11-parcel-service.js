@@ -51,22 +51,48 @@
  *   convertToString(42)                   // => "42"
  *   stringToChars("Dak")                  // => ["D", "a", "k"]
  */
+
 export function parcelToJSON(parcel) {
-  // Your code here
+  if (parcel === undefined) return "";
+  try {
+    return JSON.stringify(parcel);
+  } catch (error) {
+    return "";
+  }
 }
 
 export function jsonToParcel(jsonString) {
-  // Your code here
+  if (typeof jsonString !== "string") return null;
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    return null;
+  }
 }
 
 export function convertToString(value) {
-  // Your code here
+  return String(value);
 }
 
 export function convertToNumber(value) {
-  // Your code here
+  return Number(value);
 }
 
 export function stringToChars(str) {
-  // Your code here
+  if (typeof str !== "string") return [];
+
+  return Array.from(str);
 }
+
+const myParcel = { id: "P001", weight: 2.5 };
+const jsonString = parcelToJSON(myParcel);
+console.log("JSON for Network:", jsonString);
+
+const receivedObject = jsonToParcel(jsonString);
+console.log("Back to Object:", receivedObject.id);
+
+console.log("Number to String:", convertToString(100));
+console.log("String to Number:", convertToNumber("42.5"));
+console.log("Boolean to Number:", convertToNumber(true));
+
+console.log("Characters of 'Dak':", stringToChars("Dak"));

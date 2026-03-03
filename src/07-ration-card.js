@@ -52,22 +52,57 @@
  *   hasRationCard({"RC001":{...}}, "RC001") // => true
  *   removeRationCard(registry, "RC001")    // => true
  */
+
+const isValidObject = (obj) => {
+  return typeof obj === "object" && obj !== null && !Array.isArray(obj);
+};
+
 export function getFamilyNames(registry) {
-  // Your code here
+  if (!isValidObject(registry)) return [];
+
+  return Object.keys(registry);
 }
 
 export function getAllFamilies(registry) {
-  // Your code here
+  if (!isValidObject(registry)) return [];
+
+  return Object.values(registry);
 }
 
 export function getRationCardEntries(registry) {
-  // Your code here
+  if (!isValidObject(registry)) return [];
+
+  return Object.entries(registry);
 }
 
 export function hasRationCard(registry, cardId) {
-  // Your code here
+  if (!isValidObject(registry) || typeof cardId !== "string") return false;
+
+  return Object.prototype.hasOwnProperty.call(registry, cardId);
 }
 
 export function removeRationCard(registry, cardId) {
-  // Your code here
+  if (!isValidObject(registry) || typeof cardId !== "string") return false;
+
+  if (registry.hasOwnProperty(cardId)) {
+    delete registry[cardId];
+    return true;
+  }
+  return false;
 }
+
+const gramRegistry = {
+  RC001: { head: "Ram Prasad", members: 4, type: "BPL" },
+  RC002: { head: "Sita Devi", members: 3, type: "APL" },
+};
+
+const ids = getFamilyNames(gramRegistry);
+console.log("Registered IDs:", ids);
+
+const exists = hasRationCard(gramRegistry, "RC001");
+console.log(`Is RC001 present? ${exists ? "Ji Haan" : "Nahi"}`);
+
+const isDeleted = removeRationCard(gramRegistry, "RC002");
+console.log(`RC002 deleted: ${isDeleted}`);
+
+console.log("Current Registry Entries:", getRationCardEntries(gramRegistry));

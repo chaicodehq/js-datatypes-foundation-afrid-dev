@@ -51,22 +51,53 @@
  *   isValidPincode("400001")   // => true
  *   countVowels("Namaste")     // => 3
  */
+
 export function writePostcard(sender, receiver, message) {
-  // Your code here
+  const isValid = (str) => typeof str === "string" && str.trim().length > 0;
+
+  if (!isValid(sender) || !isValid(receiver) || !isValid(message)) return "";
+
+  return `Priy ${receiver.trim()},\n\n${message.trim()}\n\nAapka/Aapki,\n${sender.trim()}`;
 }
 
 export function isValidPincode(code) {
-  // Your code here
+  if (typeof code !== "string" || code.length !== 6) return false;
+
+  if (code.startsWith("0")) return false;
+
+  return /^\d+$/.test(code);
 }
 
-export function formatPostcardField(label, value, width) {
-  // Your code here
+export function formatPostcardField(label, value, width = 12) {
+  if (typeof label !== "string" || typeof value !== "string") return "";
+
+  return `${label.padEnd(width)}: ${value}`;
 }
 
 export function isFromState(address, stateCode) {
-  // Your code here
+  if (typeof address !== "string" || typeof stateCode !== "string")
+    return false;
+
+  return address.trim().endsWith(stateCode.trim());
 }
 
 export function countVowels(message) {
-  // Your code here
+  if (typeof message !== "string") return 0;
+
+  const vowelsFound = message.match(/[aeiouAEIOU]/g);
+
+  return vowelsFound ? vowelsFound.length : 0;
 }
+
+const msg = writePostcard("Guddu", "Dadi ji", "Hum sab theek hain.");
+console.log(msg);
+
+console.log("Pincode Valid?:", isValidPincode("400001"));
+
+console.log(formatPostcardField("Sender", "Guddu"));
+console.log(formatPostcardField("Receiver", "Dadi ji"));
+
+const isUP = isFromState("Lucknow, UP", "UP");
+console.log(`Is from UP? ${isUP}`);
+
+console.log("Vowel Count in 'Namaste':", countVowels("Namaste"));
